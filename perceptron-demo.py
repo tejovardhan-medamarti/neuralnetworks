@@ -108,5 +108,40 @@ def update(i):
     line.set_ydata(x_i*m[i]+b[i])
     ax.set_xlabel(label)
 
+def perceptron_gradient(X,y):
+    w1=w2=b=1
+    lr = 0.1
+    for j in range(1000): #epochs
+        for i in range(X.shape[0]):
+
+            z=w1*X[i][0]+w2*X[i][1]+b
+
+            if z*y[i]<0:    #misclassified/ update weights
+                w1 += lr*y[i]*X[i][0]
+                w2 += lr*y[i]*X[i][1]
+                b += lr*y[i]
+        
+    return w1,w2,b
+
+
 ani = FuncAnimation(fig, update,repeat=True, frames=np.arange(0, len(m)), interval=100) 
 ani.save('output/makeClassificationanimation.gif', writer='imagemagick', fps=10)
+
+
+def calculate_Slope(w1,w2,b):
+    m= -(w1/w2)
+    c= -(b/w2)
+    return m,c
+
+w1,w2,b = perceptron_gradient(X,y)
+print(w1,w2,b)
+m,c = calculate_Slope(w1,w2,b)
+
+x_input = np.linspace(-3,3,100)
+y_input = m*x_input + c
+
+plt.figure(figsize=(10,6))
+plt.plot(x_input,y_input,color ='red', linewidth =3)
+plt.scatter(X[:,0],X[:,1],c=y, cmap='winter', s=100)
+plt.ylim(-3,2)
+plt.savefig('output/makeClassificationwithgradient.png')
