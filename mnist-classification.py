@@ -32,3 +32,8 @@ y_pred = y_prob.argmax(axis=1)
 from sklearn.metrics import accuracy_score
 acc_score =accuracy_score(y_test, y_pred)
 print(acc_score)
+
+plt.imshow(X_test[5])
+output_class = model.predict(X_test[5].reshape(1,28,28)).argmax(axis=1)
+print(output_class )
+plt.savefig('output/mnist-prediction.png')
