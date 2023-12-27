@@ -7,15 +7,15 @@ df = pd.read_csv("data/Churn_Modelling.csv")
 # print(df.head())
 # print(df.shape)
 
-df.info()
+# df.info()
 
-print(df.duplicated().sum())
+# print(df.duplicated().sum())
 
-print(df['Exited'].value_counts())
+# print(df['Exited'].value_counts())
 # DAta is imbalanced
 
-print(df['Geography'].value_counts())
-print(df['Gender'].value_counts())
+# print(df['Geography'].value_counts())
+# print(df['Gender'].value_counts())
 
 df.drop(columns=['RowNumber', 'CustomerId', 'Surname'], inplace=True)
 
@@ -29,7 +29,7 @@ from sklearn.model_selection import train_test_split
 X = df.drop(columns=['Exited'])
 y = df['Exited']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
-print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
+# print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
 # scaling the data
 from sklearn.preprocessing import StandardScaler
@@ -37,9 +37,19 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-print(X_train_scaled)
+# print(X_train_scaled)
 
+import tensorflow
+from tensorflow import keras
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense
 
+# building sequential model, this is the neural network architecture.
+model = Sequential()
+model.add(Dense(3, input_dim=11, activation='sigmoid'))
+model.add(Dense(1, activation='sigmoid'))
 
+model.summary()
 
-
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.fit(X_train_scaled, y_train, epochs=10)
